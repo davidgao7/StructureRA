@@ -1,7 +1,7 @@
 # StructureRA
 Your personal assistant on structure data!
 
-# check if model is hallucinating
+# Check if model is hallucinating
 
 `question`: "Who is typically older: point quards or centers?"
 
