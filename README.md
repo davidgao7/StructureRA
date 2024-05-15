@@ -1,4 +1,5 @@
 # StructureRA
+Talk to your database!
 Your personal assistant on structure data!
 
 # Check if model is hallucinating
