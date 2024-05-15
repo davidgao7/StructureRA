@@ -168,7 +168,7 @@ if __name__ == "__main__":
             (
                 "user",
                 "Write 3 google search queries to search online that form an "
-                "objective opinion from the following: {question}\n"
+                "objective opinion from the following: {original_question}\n"
                 "You must respond with a list of strings in the following format: "
                 '["query 1", "query 2", "query 3"].',
             ),
@@ -189,12 +189,29 @@ if __name__ == "__main__":
             lambda x: [{"question": q} for q in x]
         )  # take the pervious chain output(list), put in a list of dict
         | sql_ans_chain.map()  # run each element in the list
+        | StrOutputParser().map()  # parse to str
+        | RunnableLambda(
+            lambda responses: "\n\n".join(
+                responses
+            )  # Combine answers into a single string
+        )  # Combine into a list , concat to a string
+        | ChatPromptTemplate.from_messages(
+            [  # NOTE: now each {question} is the output for each question, no matter you use original key or not
+                (
+                    "user",
+                    """
+                    {original_question}
+                    """,
+                ),
+            ]
+        )
+        | ChatOpenAI(temperature=0)
     )
 
     # print(
-    full_research_chain.invoke(
-        {"question": "Who is typically older: point quards or centers?"}
-    )
+    # full_research_chain.invoke(
+    #     {"original_question": "Who is typically older: point guards or centers?"}
+    # )
     # )
 
     # 5. we get the knowledge, now we need to write a report
@@ -239,16 +256,16 @@ if __name__ == "__main__":
     #
     # chain.invoke({"question": "how's the job market looking in 2024 in US?"})
 
-    # app = FastAPI(
-    #     title="LangChain Server",
-    #     version="1.0",
-    #     description="A simple api server using Langchain's Runnable interfaces",
-    # )
-    #
-    # add_routes(
-    #     app,
-    #     chain,
-    #     path="/research-assistant",  # localhost:8001/research-assistant/playground
-    # )
-    #
-    # uvicorn.run(app, host="localhost", port=8000)
+    app = FastAPI(
+        title="LangChain Server",
+        version="1.0",
+        description="A simple api server using Langchain's Runnable interfaces",
+    )
+
+    add_routes(
+        app,
+        full_research_chain,
+        path="/db-assistant",  # localhost:8001/db-assistant/playground
+    )
+
+    uvicorn.run(app, host="localhost", port=8000)
