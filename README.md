@@ -25,7 +25,7 @@ This data suggests that centers tend to be slightly younger than point guards on
 **reality**:
 <img src="human_check_result.png" alt="human_check_result"/>
 
-llama3 seems accurate(but not quite as good as gpt-3.5), good job!
+llama3 seems accurate (for most of time), sometimes hallucinating.
 
 
 # Apply nice UI
