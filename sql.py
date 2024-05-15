@@ -13,8 +13,12 @@ from langchain_core.pydantic_v1 import BaseModel
 from langchain_core.runnables import RunnableLambda, RunnablePassthrough
 
 # Add the LLM downloaded from Ollama
-ollama_llm = "dolphin-llama3:8b"
-llm = ChatOllama(model=ollama_llm)
+# ollama_llm = "dolphin-llama3:8b"
+# llm = ChatOllama(model=ollama_llm)
+
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(temperature=0)
 
 
 db_path = Path(__file__).parent / "nba_roster.db"
