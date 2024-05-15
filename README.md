@@ -2,6 +2,15 @@
 Talk to your database!
 Your personal assistant on structure data!
 
+# How to run
+```bash
+pip install -r requirements.txt
+```
+
+```bash
+python web.py
+```
+
 # Check if model is hallucinating
 
 `question`: "Who is typically older: point quards or centers?"
